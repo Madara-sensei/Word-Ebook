@@ -1,0 +1,28 @@
+{
+    "ebook": [
+      {
+        "id": 3242431,
+        "name": "E-Book 1",
+        "price": 1299,
+        "imgName": "Ebook1.png"
+        
+      },
+      {
+        "id": 2345525,
+        "name": "E-Book 2",
+        "price": 1499,
+        "imgName": "Ebook2.png"
+        
+      },
+      {
+        
+        "id": 2396525,
+        "name": "E-Book 3",
+        "price": 1499,
+        "imgName": "Ebook3.png"
+        
+
+      }
+     
+    ]
+  }
