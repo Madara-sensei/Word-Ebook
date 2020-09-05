@@ -1,1 +1,0 @@
-Chaque item à un id quand on clique on a /home/:id avec la photo  on met son mail et clique purchase et ensuite le  paypal proc
