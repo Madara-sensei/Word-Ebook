@@ -150,8 +150,8 @@ app.get('/process', function(req, res){
                
                 
                 let mailOptions = {
-                    from: 'hugospro2020@gmail.com', // TODO: email sender
-                    to: 'senehugo2017@gmail.com', // TODO: email receiver
+                    from: '', // TODO: email sender
+                    to: '', // TODO: email receiver
                     subject: 'Commande Paypal',
                     text: 'Your command has been treated!'
                 };
