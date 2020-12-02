@@ -55,7 +55,7 @@ app.get ('/home/product/:id',function(req,res){
         console.log(productid)
         var items = JSON.parse(data)
         var productparams = productfinder(productid,items)
-        console.log(productparams)
+     
        
        
        
@@ -85,7 +85,7 @@ app.get('/home/product/pay/:id', function(req, res){
         },
         'transactions':[{
             'amount':{
-                'total':'97',
+                'total':'',
                 'currency':'EUR'
             },
             'description':'This is the payment transaction description.'
@@ -93,7 +93,7 @@ app.get('/home/product/pay/:id', function(req, res){
     }
     //payReq.transactions.amount["total"]="23"//
   
-    payReq['transactions'][0]['amount']['total']= "12"
+    
     console.log(payReq)
     fs.readFile('items.json', function(error, data) {
         if (error) {
@@ -104,6 +104,28 @@ app.get('/home/product/pay/:id', function(req, res){
             var items = JSON.parse(data)
             var product_price = productfinder(productid,items).price/100
             console.log(product_price)
+            payReq['transactions'][0]['amount']['total']= product_price
+            paypal.payment.create(payReq, function(error, payment){
+                if(error){
+                    console.error(error);
+                } else {
+                    //capture HATEOAS links
+                    var links = {};
+                    payment.links.forEach(function(linkObj){
+                        links[linkObj.rel] = {
+                            'href': linkObj.href,
+                            'method': linkObj.method
+                        };
+                    })
+                
+                    //if redirect url present, redirect user
+                    if (links.hasOwnProperty('approval_url')){
+                        res.redirect(links['approval_url'].href);
+                    } else {
+                        console.error('no redirect URI present');
+                    }
+                }
+            });
         }
       
     })
@@ -113,27 +135,7 @@ app.get('/home/product/pay/:id', function(req, res){
 
     //build PayPal payment request
    
-    paypal.payment.create(payReq, function(error, payment){
-        if(error){
-            console.error(error);
-        } else {
-            //capture HATEOAS links
-            var links = {};
-            payment.links.forEach(function(linkObj){
-                links[linkObj.rel] = {
-                    'href': linkObj.href,
-                    'method': linkObj.method
-                };
-            })
-        
-            //if redirect url present, redirect user
-            if (links.hasOwnProperty('approval_url')){
-                res.redirect(links['approval_url'].href);
-            } else {
-                console.error('no redirect URI present');
-            }
-        }
-    });
+    
 });
 
 app.get('/process', function(req, res){
@@ -145,7 +147,7 @@ app.get('/process', function(req, res){
             console.error(error);
         } else {
             if (payment.state == 'approved'){ 
-                console.log(payment)
+               
                 
                 let mailOptions = {
                     from: 'hugospro2020@gmail.com', // TODO: email sender
